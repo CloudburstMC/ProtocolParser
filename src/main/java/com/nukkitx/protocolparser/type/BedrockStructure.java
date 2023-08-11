@@ -14,6 +14,8 @@ public abstract class BedrockStructure {
     private static final Pattern SPLIT_PATTERN = Pattern.compile(", ", Pattern.MULTILINE);
     private static final Pattern INTEGER_PATTERN = Pattern.compile("^(.+): (-?[0-9]+)$", Pattern.MULTILINE);
     private static final Pattern STRING_PATTERN = Pattern.compile("^(.+): \"(.+)\"$", Pattern.MULTILINE | Pattern.DOTALL);
+    private static final Pattern VECTOR_PATTERN = Pattern.compile(
+            "std::vector<class std::unique_ptr<class ([A-z]+),struct std::default_delete<class ([A-z]+)>>,class std::allocator<class std::unique_ptr<class ([A-z]+),struct std::default_delete<class ([A-z]+)>>>>");
 
     private static final Comparator<DiGraphNode> NODE_COMPARATOR = (o1, o2) -> {
         int i1 = Integer.parseInt(o1.getId());
@@ -49,7 +51,6 @@ public abstract class BedrockStructure {
                 int id = (int) getComments(node).get("id");
                 throw new IllegalStateException(String.format("Unknown attribute %d with id '%d' in '%s'", attributes, id, rootName));
         }
-//        return null;
     }
 
     static List<DiGraphNode> getChildren(DiGraph graph, DiGraphNode parent) {
@@ -92,12 +93,25 @@ public abstract class BedrockStructure {
     }
 
     private static final Pattern NET_ID_PATTERN = Pattern.compile("^(Simple|Typed)(Server|Client)NetId<struct (.+),(?:unsigned int|int),0>$");
+    private static final Pattern STD_OPTIONAL = Pattern.compile("std::optional<(.+)>");
+    private static final String STD_STRING = "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char>>";
 
     static String getSafeTypeName(String name) {
-        Matcher matcher = NET_ID_PATTERN.matcher(name);
+        name = name.replace("> >", ">>").replace("> >", ">>");
+        Matcher matcher = VECTOR_PATTERN.matcher(name);
+        if (matcher.matches()) {
+            return matcher.group(1) + "[]";
+        }
+        matcher = NET_ID_PATTERN.matcher(name);
         if (matcher.matches()) {
             return matcher.group(1) + matcher.group(2) + "NetId_" + matcher.group(3);
         }
-        return name.replaceAll("::", "_");
+        name = name.replace(STD_STRING, "String");
+
+        matcher = STD_OPTIONAL.matcher(name);
+        if (matcher.matches()) {
+            name = "Optional_" + matcher.group(1);
+        }
+        return name.replace("::", "_");
     }
 }
