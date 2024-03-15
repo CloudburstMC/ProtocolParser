@@ -1,8 +1,8 @@
-package com.nukkitx.protocolparser;
+package org.cloudburstmc.protocolparser;
 
 import com.nukkitx.digraph.DiGraph;
 import com.nukkitx.digraph.parser.GraphParser;
-import com.nukkitx.protocolparser.type.BedrockType;
+import org.cloudburstmc.protocolparser.type.BedrockType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

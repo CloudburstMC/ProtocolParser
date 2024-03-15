@@ -14,8 +14,8 @@ java -jar ProtocolParser.jar -i="directory/to/docs" -o="directory/to/markdown"
 
 # Building
 
-Requires Maven
+Requires Gradle
 
 ```
-mvn package
+./gradlew shadowJar
 ```

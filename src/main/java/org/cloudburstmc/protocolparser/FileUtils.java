@@ -1,4 +1,4 @@
-package com.nukkitx.protocolparser;
+package org.cloudburstmc.protocolparser;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

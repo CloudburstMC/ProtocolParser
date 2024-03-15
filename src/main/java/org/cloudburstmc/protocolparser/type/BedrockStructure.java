@@ -1,4 +1,4 @@
-package com.nukkitx.protocolparser.type;
+package org.cloudburstmc.protocolparser.type;
 
 import com.nukkitx.digraph.DiGraph;
 import com.nukkitx.digraph.DiGraphEdge;

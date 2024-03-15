@@ -1,6 +1,6 @@
-package com.nukkitx.protocolparser;
+package org.cloudburstmc.protocolparser;
 
-import com.nukkitx.protocolparser.type.BedrockType;
+import org.cloudburstmc.protocolparser.type.BedrockType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

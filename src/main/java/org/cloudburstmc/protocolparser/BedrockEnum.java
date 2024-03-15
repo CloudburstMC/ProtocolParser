@@ -1,4 +1,4 @@
-package com.nukkitx.protocolparser;
+package org.cloudburstmc.protocolparser;
 
 import lombok.AccessLevel;
 import lombok.Getter;
