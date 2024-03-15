@@ -50,11 +50,11 @@ public class BedrockEnum {
         builder.append("# ").append(name);
         builder.append("\n\n");
         // table header
-        builder.append("Name | Value").append('\n');
+        builder.append("Index | Name").append('\n');
         builder.append("--- | ---");
 
         values.forEach((name, value) -> {
-            builder.append('\n').append(name).append(" | ").append(value);
+            builder.append('\n').append(value).append(" | ").append(name);
         });
 
         return builder.toString();
