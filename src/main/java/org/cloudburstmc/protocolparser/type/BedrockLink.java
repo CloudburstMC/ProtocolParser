@@ -4,6 +4,7 @@ import com.nukkitx.digraph.DiGraph;
 import com.nukkitx.digraph.DiGraphNode;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.text.StringEscapeUtils;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class BedrockLink extends BedrockStructure {
@@ -26,6 +27,6 @@ public class BedrockLink extends BedrockStructure {
 
     @Override
     public String toString() {
-        return "<a href=\"../types/" + getSafeTypeName(type) + ".md\">" + type + "</a>";
+        return "<a href=\"../types/" + getSafeTypeName(type) + ".md\">" + StringEscapeUtils.escapeHtml4(type) + "</a>";
     }
 }

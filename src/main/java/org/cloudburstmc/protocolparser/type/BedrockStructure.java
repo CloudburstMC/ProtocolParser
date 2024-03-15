@@ -3,6 +3,7 @@ package org.cloudburstmc.protocolparser.type;
 import com.nukkitx.digraph.DiGraph;
 import com.nukkitx.digraph.DiGraphEdge;
 import com.nukkitx.digraph.DiGraphNode;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -87,7 +88,7 @@ public abstract class BedrockStructure {
     static String getMarkdownNotes(String notes) {
         Matcher matcher = ENUM_PATTERN.matcher(notes);
         if (matcher.find()) {
-            return "<a href=\"../enums/" + getSafeTypeName(matcher.group(1)) + ".md\">" + matcher.group(1) + "</a>";
+            return "<a href=\"../enums/" + getSafeTypeName(matcher.group(1)) + ".md\">" + StringEscapeUtils.escapeHtml4(matcher.group(1)) + "</a>";
         }
         return notes;
     }
