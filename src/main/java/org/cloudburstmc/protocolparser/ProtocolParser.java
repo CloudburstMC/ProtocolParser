@@ -141,7 +141,7 @@ public class ProtocolParser {
         Files.createDirectory(packetsDir);
 
         for (BedrockPacket packet : packets.values()) {
-            Path packetPath = packetsDir.resolve(packet.getName() + ".md");
+            Path packetPath = packetsDir.resolve(packet.getName().replaceAll("[\\\\/:*?\"<>|]", "") + ".md");
             Files.write(packetPath, packet.toString().getBytes(UTF_8), TRUNCATE_EXISTING, CREATE);
         }
 
@@ -150,7 +150,7 @@ public class ProtocolParser {
         Files.createDirectory(typesDir);
 
         for (BedrockType type : types.values()) {
-            Path typePath = typesDir.resolve(type.getName() + ".md");
+            Path typePath = typesDir.resolve(type.getName().replaceAll("[\\\\/:*?\"<>|]", "") + ".md");
             String content = "# " + type.getName() + "\n\n" + type.toString();
             Files.write(typePath, content.getBytes(UTF_8), TRUNCATE_EXISTING, CREATE);
         }
