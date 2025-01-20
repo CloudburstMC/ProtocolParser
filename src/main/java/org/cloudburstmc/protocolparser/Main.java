@@ -22,7 +22,7 @@ public class Main {
         OptionSpec<Void> helpSpec = parser.accepts("help", "Shows this page").forHelp();
         OptionSpec<Path> inputSpec = parser.acceptsAll(Arrays.asList("input", "in", "i"), "Input directory")
                 .withRequiredArg().required().ofType(File.class).withValuesConvertedBy(new PathConverter());
-        OptionSpec<Path> outputSpec = parser.acceptsAll(Arrays.asList("output", "out", "o"), "Input directory")
+        OptionSpec<Path> outputSpec = parser.acceptsAll(Arrays.asList("output", "out", "o"), "Output directory")
                 .withRequiredArg().required().ofType(File.class).withValuesConvertedBy(new PathConverter());
 
         OptionSet options = parser.parse(args);
