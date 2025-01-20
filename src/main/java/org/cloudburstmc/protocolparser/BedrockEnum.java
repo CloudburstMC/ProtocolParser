@@ -81,6 +81,19 @@ public class BedrockEnum {
     }
 
     private static String text(Element element) {
+        if (!element.getElementsByTag("table").isEmpty()) { // new format
+            Element table = element.getElementsByTag("table").get(0).getElementsByTag("tbody").get(0);
+            StringBuilder accum = new StringBuilder();
+
+            for (Element column : table.getElementsByTag("tr")) {
+                Elements elements = column.getElementsByTag("td");
+                Element id = elements.get(1);
+                Element name = elements.get(0);
+                accum.append(name.text()).append(" = ").append(id.text()).append('\n');
+            }
+             return accum.toString();
+        }
+
         final StringBuilder accum = StringUtil.borrowBuilder();
         NodeTraversor.traverse(new NodeVisitor() {
             @SneakyThrows

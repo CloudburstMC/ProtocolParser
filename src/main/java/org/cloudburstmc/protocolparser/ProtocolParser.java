@@ -69,6 +69,10 @@ public class ProtocolParser {
                 continue;
             }
 
+            if (row.parent() != table) {
+                continue;
+            }
+
             Elements columns = row.getElementsByTag("td");
 
             BedrockEnum bedrockEnum = BedrockEnum.parse(columns);
