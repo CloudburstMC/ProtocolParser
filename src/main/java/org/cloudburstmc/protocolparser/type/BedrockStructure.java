@@ -36,21 +36,26 @@ public abstract class BedrockStructure {
 
     static BedrockStructure parseStructure(DiGraph graph, DiGraphNode node) {
         Map<String, Object> comments = getComments(node);
-        int attributes = (int) comments.get("attributes");
+        int attributes = (int) comments.getOrDefault("attributes", 0);
 
         switch (attributes) {
-            case 0: // Raw type
+            case 0: // Field node
                 return BedrockField.parse(graph, node);
             case 2: // Condition
                 return BedrockCondition.parse(graph, node);
             case 8: // Array
                 return BedrockArray.parse(graph, node);
-            case 256: // Type
+            case 256: // Link to named type
                 return BedrockLink.parse(graph, node);
+            case 512: // Primitive type leaf; type is in node label
+                return BedrockField.parse(graph, node);
             default:
-                String rootName = (String) graph.getNodes().values().iterator().next().getAttribute("label");
-                int id = (int) getComments(node).get("id");
-                throw new IllegalStateException(String.format("Unknown attribute %d with id '%d' in '%s'", attributes, id, rootName));
+                String rootName = Optional.ofNullable(
+                                (String) graph.getNodes().values().iterator().next().getAttribute("label"))
+                        .orElse("<unknown>");
+                int id = (int) comments.getOrDefault("id", -1);
+                throw new IllegalStateException(String.format(
+                        "Unknown attribute %d with id '%d' in '%s'", attributes, id, rootName));
         }
     }
 

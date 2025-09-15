@@ -5,6 +5,9 @@ import com.nukkitx.digraph.DiGraphNode;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class BedrockField extends BedrockStructure {
     private final String name;
@@ -12,13 +15,30 @@ public class BedrockField extends BedrockStructure {
     private final String notes;
 
     public static BedrockField parse(DiGraph graph, DiGraphNode nameNode) {
-        DiGraphNode typeNode = graph.getEdges().higherEntry(nameNode.getId()).getValue().getNode2();
-
-        String name = (String) nameNode.getAttribute("label");
+        String fieldName = firstNonEmpty((String) nameNode.getAttribute("label"), "value");
         String notes = getNotes(nameNode);
-        String type = (String) typeNode.getAttribute("label");
 
-        return new BedrockField(name, type, notes);
+        List<DiGraphNode> children = getChildren(graph, nameNode);
+        String typeString = children.isEmpty()
+                ? typeFromNode(nameNode) // primitive leaf
+                : typeFromNode(children.get(0)); // child holds the type
+
+        return new BedrockField(fieldName, typeString, notes);
+    }
+
+    private static String typeFromNode(DiGraphNode node) {
+        Map<String, Object> cm = getComments(node);
+        String commentType = (String) cm.get("typeName");
+        String labelType = (String) node.getAttribute("label");
+        String rawType = firstNonEmpty(commentType, labelType, "");
+        return getSafeTypeName(rawType);
+    }
+
+    private static String firstNonEmpty(String... values) {
+        for (String v : values) {
+            if (v != null && !v.isEmpty()) return v;
+        }
+        return "";
     }
 
     @Override
